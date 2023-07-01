@@ -1,0 +1,18 @@
+This patch deletes error logging for unexpected I/O interrupts from BFLB MMC.
+
+---
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index f3af1bd0f7b9..d6cd97489d78 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3423,10 +3423,7 @@ static void sdhci_data_irq(struct sdhci_host *host, u32 intmask)
+                if (host->pending_reset)
+                        return;
+ 
+-               pr_err("%s: Got data interrupt 0x%08x even though no data operation was in progress.\n",
+-                      mmc_hostname(host->mmc), (unsigned)intmask);
+                sdhci_err_stats_inc(host, UNEXPECTED_IRQ);
+-               sdhci_dumpregs(host);
+ 
+                return;
+        }
